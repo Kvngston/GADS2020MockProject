@@ -1,0 +1,18 @@
+Google Cloud Shell commands for VPC NETWORKING LAB
+
+Reserver Static Ip address 
+Equivalent Shell Command - gcloud compute addresses create mc-sever-ip --global --ip-version=IPV4 
+
+Create VM instance
+Equivalent Shell Command - gcloud beta compute instances create mc-server --zone=us-central1-a --machine-type=e2-medium --subnet=default --address=address from reserving static address --network-tier=PREMIUM --maintenance-policy=MIGRATE --scopes=https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.read_write --tags=minecraft-server --image=debian-9-stretch-v20200902 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=mc-server --create-disk=mode=rw,size=50,type=pd-ssd,name=minecraft-disk,device-name=minecraft-disk --reservation-affinity=any
+
+
+Create A firewall rule 
+Equivalent Shell Command - gcloud compute firewall-rules create minecraft-rule --network=default --target-tags=minecraft-server --direction=INGRESS --priority=1000 --source-ranges=0.0.0.0/0 --action=ALLOW --rules=tcp:25565 
+
+Create Storage Bucket 
+Equivalent Shell Command - gsutil mb gs://[Your Bucket Name]-minecraft-backup
+
+
+Update VM Instance Metadata
+Equivalent Shell Command - gcloud compute instances update mc-server --metadata-from-file startup-script-url=https://storage.googleapis.com/cloud-training/archinfra/mcserver/startup.sh shutdown-script-url=https://storage.googleapis.com/cloud-training/archinfra/mcserver/shutdown.sh

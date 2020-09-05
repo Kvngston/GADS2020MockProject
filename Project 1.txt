@@ -1,0 +1,64 @@
+Google Cloud Shell commands for VPC NETWORKING LAB
+
+
+Delete Firewall Rules
+Equivalent Shell Command - gcloud compute firewall-rules delete default-allow-icmp default-allow-rdp default-allow-ssh default-allow-internal
+
+Delete Default Network
+Equivalent Shell Command - gcloud compute networks delete default
+
+Create An Auto mode Network 
+Equivalent Shell Command - gcloud compute networks create mynetwork --subnet-mode=auto --bgp-routing-mode-regional
+
+
+Create Firewall Rules 
+Equivalent Shell Commands - 
+gcloud compute firewall-rules create mynetwork-allow-icmp --network=mynetwork --direction=INGRESS --priority=65534 --source-ranges=0.0.0.0/0 --action=ALLOW --rules=icmp
+
+gcloud compute firewall-rules create mynetwork-allow-internal --network=mynetwork --direction=INGRESS --priority=65534 --source-ranges=10.128.0.0/9 --action=ALLOW --rules=all
+
+gcloud compute firewall-rules create mynetwork-allow-rdp --network=mynetwork  --direction=INGRESS --priority=65534 --source-ranges=0.0.0.0/0 --action=ALLOW --rules=tcp:3389
+
+gcloud compute firewall-rules create mynetwork-allow-ssh --network=mynetwork --direction=INGRESS --priority=65534 --source-ranges=0.0.0.0/0 --action=ALLOW --rules=tcp:22
+
+
+
+Create VM in Us-Central1
+Equivalent Shell Command - gcloud compute instances create mynet-us-vm --zone=us-central1-c --machine-type=n1-standard 
+
+Create VM in Europe-West1
+Equivalent Shell Command - gcloud compute instances create mynet-eu-vm--zone=europe-west1-c --machine-type=n1-standard
+
+
+Update Network to custom mode network
+Equivalent Shell Command - gcloud compute networks update mynetwork --switch-to-custom-subnet-mode 
+
+
+Create Management Network 
+Equivalent Shell Command - gcloud compute networks create managementnet --subnet-mode=custom
+
+Create Custom subnet in management Network 
+Equivalent Shell Command - gcloud compute networks subnets create managementsubnet-us --network=managementnet --region=us-central1 --range=10.130.0.0/20
+
+Create Private Network 
+Equivalent Shell Command - gcloud compute networks create privatenet --subnet-mode=custom
+
+Create Private Network Sub Networks in us and Europe
+Equivalent Shell commands - 
+gcloud compute networks subnets create privatesubnet-us --network=privatenet --region=us-central1 --range=172.16.0.0/24
+
+gcloud compute networks subnets create privatesubnet-eu --network=privatenet --region=europe-west1 --range=172.20.0.0/20
+
+
+Create Firewall Rules For Managementnet
+Equivalent Shell Command - gcloud compute firewall-rules create managementnet-allow-icmp-ssh-rdp --network=managementnet --direction=INGRESS --priority=1000 --source-ranges=0.0.0.0/0 --action=ALLOW --rules=tcp:22,tcp:3389,icmp 
+
+Create Firewall Rule for Privatenet
+Equivalent Shell Command - gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp:22,tcp:3389 --source-ranges=0.0.0.0/0
+
+
+Create VM Instance with managementnet 
+Equivalent Shell Command - gcloud compute instances create managementnet-us-vm --zone=us-central1-c --machine-type=f1-micro --subnet=managementsubnet-us 
+
+Create Vm Instance with privatenet 
+Equivalent Shell Command - gcloud compute instances create privatenet-us-vm --zone=us-central1-c --machine-type=f1-micro --subnet=privatesubnet-us 
