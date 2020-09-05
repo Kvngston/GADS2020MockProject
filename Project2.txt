@@ -1,4 +1,4 @@
-Google Cloud Shell commands for VPC NETWORKING LAB
+Google Cloud Shell commands for Working with Virtual Machines
 
 Reserver Static Ip address 
 Equivalent Shell Command - gcloud compute addresses create mc-sever-ip --global --ip-version=IPV4 
